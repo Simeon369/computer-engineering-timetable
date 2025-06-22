@@ -23,27 +23,52 @@ export default function classPage() {
       });
   }
 
-  const handleDownload = () => {
-  const node = document.getElementById("timetable");
+const handleDownload = () => {
+  const timetableNode = document.getElementById("timetable");
 
-  if (!node) {
+  if (!timetableNode) {
     alert("Timetable not found.");
     return;
   }
 
-  toPng(node, { cacheBust: true })
-    .then((dataUrl) => {
-      const pdf = new jsPDF("potrait", "pt", "a4");
-      const imgProps = pdf.getImageProperties(dataUrl);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+  // Save original styles
+  const originalWidth = timetableNode.style.width;
+  const originalHeight = timetableNode.style.height;
+  const originalOverflow = timetableNode.style.overflow;
 
-      pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save("timetable.pdf");
-    })
-    .catch((err) => {
-      console.error("Failed to export PDF", err);
-    });
+  // Force full size
+  timetableNode.style.width = timetableNode.scrollWidth + "px";
+  timetableNode.style.height = timetableNode.scrollHeight + "px";
+  timetableNode.style.overflow = "visible";
+
+  // Wait for styles to apply before capturing
+  setTimeout(() => {
+    toPng(timetableNode, { cacheBust: true })
+      .then((dataUrl) => {
+        const pdf = new jsPDF("landscape", "pt", "a4");
+        const img = new Image();
+        img.src = dataUrl;
+
+        img.onload = () => {
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (img.height * pdfWidth) / img.width;
+
+          pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+          pdf.save(`${classId}-timetable.pdf`);
+
+          // Restore original styles
+          timetableNode.style.width = originalWidth;
+          timetableNode.style.height = originalHeight;
+          timetableNode.style.overflow = originalOverflow;
+        };
+      })
+      .catch((err) => {
+        console.error("Error generating PDF", err);
+        timetableNode.style.width = originalWidth;
+        timetableNode.style.height = originalHeight;
+        timetableNode.style.overflow = originalOverflow;
+      });
+  }, 100); // Add small delay to ensure DOM has re-rendered
 };
   
 
