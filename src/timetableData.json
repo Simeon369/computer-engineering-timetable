@@ -1,0 +1,92 @@
+[
+  {
+    "day": "MON",
+    "Period_1": {
+      "course": "EEC 313",
+      "venue": "CE 15",
+      "lecturer": "ENGR SALIU"
+    },
+    "Period_2": {
+      "course": "MTH 313",
+      "venue": "MELB 0-3"
+    },
+    "Period_3": {},
+    "Period_4": {
+        "course": "PRACTICAL"
+    }
+  },
+  {
+    "day": "TUE",
+    "Period_1": {
+      "course": "EEC 315",
+      "venue": "CE 15",
+      "lecturer": "ENGR SALIU"
+    },
+    "Period_2": {},
+    "Period_3": {
+      "course": "CTE 317",
+      "venue": "CE 15",
+      "lecturer": "DR BELLO"
+    },
+    "Period_4": {
+        "course": "EEC 315 PRACT.",
+        "venue": "ETF",
+        "lecturer": "ENGR IGWE"
+    }
+  },
+  {
+    "day": "WED",
+    "Period_1": {},
+    "Period_2": {
+      "course": "CTE 313",
+      "venue": "MELB 0-3",
+      "lecturer": "ENGR SALIU"
+    },
+    "Period_3": {
+      "course": "CTE 314",
+      "venue": "ETF",
+      "lecturer": "ENGR (MS) COLE"
+    },
+    "Period_4": {
+        "course": "SPORT"
+    }
+  },
+  {
+    "day": "THUR",
+    "Period_1": {
+      "course": "CTE 312",
+      "venue": "MELB 0-3",
+      "lecturer": "SALAMI"
+    },
+    "Period_2": {
+      "course": "CTE 315",
+      "venue": "ETF",
+      "lecturer": "ENGR IGWE"
+    },
+    "Period_3": {
+      "course": "CTE 311",
+      "venue": "MELB 0-3",
+      "lecturer": "ENGR BARI"
+    },
+    "Period_4": {
+        "course": "CTE 316 PRACT.",
+        "venue": "MELB 2-9",
+        "lecturer": "ENGR OTUNUBI"
+    }
+  },
+  {
+    "day": "FRI",
+    "Period_1": {
+      "course": "CTE 316",
+      "venue": "MELB 2-9",
+      "lecturer": "ENGR YEKINI"
+    },
+    "Period_2": {},
+    "Period_3": {
+        "course": "JUMAT PRAYER"
+    },
+    "Period_4": {
+        "course": "JUMAT PRAYER"
+    }
+  }
+]
