@@ -1,0 +1,38 @@
+[
+  {
+    "day": "MON",
+    "Period_1": { "course": "GNS 201", "venue": "MELB 0-3", "lecturer": "" },
+    "Period_2": { "course": "EEC 234", "venue": "ETF", "lecturer": "ENGR IGWE" },
+    "Period_3": { "course": "CTE 231", "venue": "MELB 2-9", "lecturer": "ENGR MIGAH" },
+    "Period_4": { "course": "CTE 232", "venue": "MELB 2-9", "lecturer": "" }
+  },
+  {
+    "day": "TUE",
+    "Period_1": { "course": "MTH 202", "venue": "MELB 0-3", "lecturer": "" },
+    "Period_2": { "course": "EEC 239", "venue": "ETF", "lecturer": "DR BELLO" },
+    "Period_3": { "course": "EED 216", "venue": "MELB 2-9", "lecturer": "" },
+    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+  },
+  {
+    "day": "WED",
+    "Period_1": { "course": "CTE 236", "venue": "CE 15", "lecturer": "ENGR OTUNUBI" },
+    "Period_2": { "course": "", "venue": "", "lecturer": "" },
+    "Period_3": { "course": "", "venue": "", "lecturer": "" },
+    "Period_4": { "course": "SPORTS", "venue": "", "lecturer": "" }
+  },
+  {
+    "day": "THUR",
+    "Period_1": { "course": "", "venue": "", "lecturer": "" },
+    "Period_2": { "course": "EEC 234", "venue": "MELB 0-3", "lecturer": "ENGR (MS) COLE" },
+    "Period_3": { "course": "CTE 233", "venue": "CE 15", "lecturer": "ENGR YEKINI" },
+    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    
+  },
+  {
+    "day": "FRI",
+    "Period_1": { "course": "", "venue": "", "lecturer": "" },
+    "Period_2": { "course": "CTE 235", "venue": "CE 15", "lecturer": "SALAMI" },
+    "Period_3": { "course": "JUMAT PRAYER", "venue": "", "lecturer": "" },
+    "Period_4": { "course": "JUMAT PRAYER", "venue": "", "lecturer": "" }
+  }
+]

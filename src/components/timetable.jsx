@@ -1,13 +1,9 @@
 import React from 'react'
-import data from './timetableData.json'
 
-const timetable = () => {
+
+const timetable = ({ data }) => {
   return (
     <div className="p-4 overflow-x-auto">
-      <h2 className="text-xl font-bold text-center mb-6">
-        Timetable <br />
-        Computer Engineering HND1
-      </h2>
       <table className="w-full border-collapse border border-gray-300 text-sm">
         <thead className="bg-gray-100 text-xs">
           <tr>
