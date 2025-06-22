@@ -12,6 +12,17 @@ export default function classPage() {
   const { classId } = useParams();
   const [data, setData] = useState([]);
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => {
+        alert("Link copied to clipboard!");
+      })
+      .catch((err) => {
+        alert("Failed to copy URL.");
+        console.error(err);
+      });
+  }
+
   const handleDownload = () => {
   const node = document.getElementById("timetable");
 
@@ -57,7 +68,9 @@ export default function classPage() {
           >
             <MdOutlineFileDownload />
           </div>
-          <div className='text-4xl p-2 rounded-full hover:text-blue-500 '>
+          <div
+          onClick={handleCopy}
+          className='text-4xl p-2 rounded-full hover:text-blue-500 '>
             <FiCopy />
           </div>
 
