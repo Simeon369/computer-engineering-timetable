@@ -24,51 +24,71 @@ export default function classPage() {
   }
 
 const handleDownload = () => {
-  const timetableNode = document.getElementById("timetable");
+  const node = document.getElementById("timetable");
 
-  if (!timetableNode) {
+  if (!node) {
     alert("Timetable not found.");
     return;
   }
 
-  // Save original styles
-  const originalWidth = timetableNode.style.width;
-  const originalHeight = timetableNode.style.height;
-  const originalOverflow = timetableNode.style.overflow;
+  // Store original styles
+  const originalStyle = {
+    width: node.style.width,
+    height: node.style.height,
+    overflow: node.style.overflow,
+  };
 
-  // Force full size
-  timetableNode.style.width = timetableNode.scrollWidth + "px";
-  timetableNode.style.height = timetableNode.scrollHeight + "px";
-  timetableNode.style.overflow = "visible";
+  // Force element to show full content
+  node.style.width = node.scrollWidth + "px";
+  node.style.height = node.scrollHeight + "px";
+  node.style.overflow = "visible";
 
-  // Wait for styles to apply before capturing
+  // Wait for DOM to reflow
   setTimeout(() => {
-    toPng(timetableNode, { cacheBust: true })
+    // Higher pixel ratio to increase quality
+    toPng(node, {
+      cacheBust: true,
+      pixelRatio: 2, // this boosts quality
+    })
       .then((dataUrl) => {
-        const pdf = new jsPDF("landscape", "pt", "a4");
         const img = new Image();
         img.src = dataUrl;
 
         img.onload = () => {
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = (img.height * pdfWidth) / img.width;
+          const pdf = new jsPDF("landscape", "pt", "a4");
 
-          pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = pdf.internal.pageSize.getHeight();
+
+          const imgWidth = img.width;
+          const imgHeight = img.height;
+
+          // Scale image to fit inside PDF
+          let scaledWidth = pdfWidth;
+          let scaledHeight = (imgHeight * pdfWidth) / imgWidth;
+
+          // If image is too tall, shrink to fit height
+          if (scaledHeight > pdfHeight) {
+            scaledHeight = pdfHeight;
+            scaledWidth = (imgWidth * pdfHeight) / imgHeight;
+          }
+
+          // Center the image on the page
+          const x = (pdfWidth - scaledWidth) / 2;
+          const y = (pdfHeight - scaledHeight) / 2;
+
+          pdf.addImage(dataUrl, "PNG", x, y, scaledWidth, scaledHeight);
           pdf.save(`${classId}-timetable.pdf`);
 
           // Restore original styles
-          timetableNode.style.width = originalWidth;
-          timetableNode.style.height = originalHeight;
-          timetableNode.style.overflow = originalOverflow;
+          Object.assign(node.style, originalStyle);
         };
       })
       .catch((err) => {
         console.error("Error generating PDF", err);
-        timetableNode.style.width = originalWidth;
-        timetableNode.style.height = originalHeight;
-        timetableNode.style.overflow = originalOverflow;
+        Object.assign(node.style, originalStyle);
       });
-  }, 100); // Add small delay to ensure DOM has re-rendered
+  }, 100);
 };
   
 
