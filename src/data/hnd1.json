@@ -8,11 +8,18 @@
     },
     "Period_2": {
       "course": "MTH 313",
-      "venue": "MELB 0-3"
+      "venue": "MELB 0-3",
+      "lecturer": ""
     },
-    "Period_3": {},
+    "Period_3": {
+      "course": "EEC 317 PRACT.",
+      "venue": "MELB 2-9",
+      "lecturer": ""
+    },
     "Period_4": {
-        "course": "PRACTICAL"
+      "course": "PRACTICAL",
+      "venue": "",
+      "lecturer": ""
     }
   },
   {
@@ -22,7 +29,11 @@
       "venue": "CE 15",
       "lecturer": "ENGR SALIU"
     },
-    "Period_2": {},
+    "Period_2": {
+      "course": "",
+      "venue": "",
+      "lecturer": ""
+    },
     "Period_3": {
       "course": "CTE 317",
       "venue": "CE 15",
@@ -36,7 +47,11 @@
   },
   {
     "day": "WED",
-    "Period_1": {},
+    "Period_1": {
+      "course": "",
+      "venue": "",
+      "lecturer": ""
+    },
     "Period_2": {
       "course": "CTE 313",
       "venue": "MELB 0-3",
@@ -81,7 +96,11 @@
       "venue": "MELB 2-9",
       "lecturer": "ENGR YEKINI"
     },
-    "Period_2": {},
+    "Period_2": {
+      "course": "",
+      "venue": "",
+      "lecturer": ""
+    },
     "Period_3": {
         "course": "JUMAT PRAYER"
     },
@@ -90,3 +109,4 @@
     }
   }
 ]
+

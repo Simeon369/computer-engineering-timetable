@@ -4,19 +4,19 @@
     "Period_1": { "course": "", "venue": "", "lecturer": "" },
     "Period_2": { "course": "EEC 115", "venue": "CE 15", "lecturer": "ENGR SALIU" },
     "Period_3": { "course": "MTH 112", "venue": "MELB 0-3", "lecturer": "" },
-    "Period_4": { "course": "CTE 112", "venue": "ETF", "lecturer": "ENGR IGWE" }
+    "Period_4": { "course": "CTE 112 PRACT.", "venue": "ETF", "lecturer": "ENGR IGWE" }
   },
   {
     "day": "TUE",
     "Period_1": { "course": "CTE 114", "venue": "MELB 2-9", "lecturer": "ENGR OTUNUBI" },
     "Period_2": { "course": "MEC 101", "venue": "CE 15", "lecturer": "" },
     "Period_3": { "course": "CTE 113", "venue": "MELB 0-3", "lecturer": "ENGR ADEBARI" },
-    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    "Period_4": { "course": "EEC 155 PRACT.", "venue": "MELB 2-9", "lecturer": "ENGR MIGAH" }
   },
   {
     "day": "WED",
     "Period_1": { "course": "CTE 111", "venue": "ETF", "lecturer": "MRS AROWOLO" },
-    "Period_2": { "course": "", "venue": "", "lecturer": "" },
+    "Period_2": { "course": "CTE 113", "venue": "ETF", "lecturer": "MRS AROWOLO" },
     "Period_3": { "course": "CTE 115", "venue": "CE 15", "lecturer": "ENGR SOLOMON" },
     "Period_4": { "course": "SPORTS", "venue": "", "lecturer": "" }
   },

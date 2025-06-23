@@ -4,14 +4,14 @@
     "Period_1": { "course": "", "venue": "", "lecturer": "" },
     "Period_2": { "course": "", "venue": "", "lecturer": "" },
     "Period_3": { "course": "CTE 431", "venue": "CE 15", "lecturer": "ENGR (MS) COLE" },
-    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    "Period_4": { "course": "CTE 432 PRACT.", "venue": "MELB 2-9", "lecturer": "ENGR OTUNUBI" }
   },
   {
     "day": "TUE",
     "Period_1": { "course": "", "venue": "", "lecturer": "" },
     "Period_2": { "course": "CTE 434", "venue": "MELB 2-9", "lecturer": "ENGR BARI" },
     "Period_3": { "course": "CTE 433", "venue": "ETF", "lecturer": "ENGR SALIU" },
-    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    "Period_4": { "course": "CTE 431 PRACT.", "venue": "ETF", "lecturer": "ADEBISI" }
   },
   {
     "day": "WED",
@@ -25,7 +25,7 @@
     "Period_1": { "course": "", "venue": "", "lecturer": "" },
     "Period_2": { "course": "MTH 321", "venue": "CE 15", "lecturer": "" },
     "Period_3": { "course": "", "venue": "", "lecturer": "" },
-    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    "Period_4": { "course": "CTE 434 PRACT.", "venue": "ETF", "lecturer": "ENGR IGWE" }
   },
   {
     "day": "FRI",
@@ -34,4 +34,5 @@
     "Period_3": { "course": "JUMAT PRAYER", "venue": "", "lecturer": "" },
     "Period_4": { "course": "JUMAT PRAYER", "venue": "", "lecturer": "" }
   }
+
 ]

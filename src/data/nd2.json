@@ -4,14 +4,14 @@
     "Period_1": { "course": "GNS 201", "venue": "MELB 0-3", "lecturer": "" },
     "Period_2": { "course": "EEC 234", "venue": "ETF", "lecturer": "ENGR IGWE" },
     "Period_3": { "course": "CTE 231", "venue": "MELB 2-9", "lecturer": "ENGR MIGAH" },
-    "Period_4": { "course": "CTE 232", "venue": "MELB 2-9", "lecturer": "" }
+    "Period_4": { "course": "CTE 232 PRACT.", "venue": "MELB 2-9", "lecturer": "ENGR MIGAH" }
   },
   {
     "day": "TUE",
     "Period_1": { "course": "MTH 202", "venue": "MELB 0-3", "lecturer": "" },
     "Period_2": { "course": "EEC 239", "venue": "ETF", "lecturer": "DR BELLO" },
     "Period_3": { "course": "EED 216", "venue": "MELB 2-9", "lecturer": "" },
-    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    "Period_4": { "course": "CTE 231 PRACT.", "venue": "MELB 2-9", "lecturer": "AROWOLO" }
   },
   {
     "day": "WED",
@@ -25,7 +25,7 @@
     "Period_1": { "course": "", "venue": "", "lecturer": "" },
     "Period_2": { "course": "EEC 234", "venue": "MELB 0-3", "lecturer": "ENGR (MS) COLE" },
     "Period_3": { "course": "CTE 233", "venue": "CE 15", "lecturer": "ENGR YEKINI" },
-    "Period_4": { "course": "PRACTICAL CLASS", "venue": "", "lecturer": "" }
+    "Period_4": { "course": "EEC 234 PRACT.", "venue": "ETF", "lecturer": "AROWOLO" }
     
   },
   {
