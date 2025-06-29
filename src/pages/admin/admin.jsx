@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FaTools } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
+import { CiCirclePlus } from "react-icons/ci";
 
 export default function AdminDashboard() {
   const [classes, setClasses] = useState([]);
@@ -90,9 +91,9 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center mb-8">
           <button
             onClick={() => setShowForm(!showForm)}
-            className="bg-blue-500  hover:bg-blue-600 transition-all duration-300 text-white px-5 py-2 rounded-lg shadow"
+            className="bg-blue-500  hover:bg-blue-600 transition-all flex items-center gap-2 duration-300 text-white px-5 py-2 rounded-lg shadow"
           >
-            + New Timetable
+            <CiCirclePlus className="font-extrabold text-lg" /> New Timetable
           </button>
         </div>
 
@@ -131,7 +132,7 @@ export default function AdminDashboard() {
               </button>
               <button
                 onClick={() => handleDelete(_id)}
-                className="text-red-600 hover:text-red-700  px-4 py-1 rounded text-2xl transition"
+                className="text-red-500 hover:text-red-400  px-4 py-1 rounded text-xl transition"
               >
                 <FaTrashAlt />
               </button>
