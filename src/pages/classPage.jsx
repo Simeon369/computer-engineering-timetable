@@ -6,6 +6,8 @@ import { FiCopy } from "react-icons/fi";
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
 import { client } from "../lib/sanity";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 
 
@@ -24,72 +26,38 @@ export default function classPage() {
       });
   }
 
-const handleDownload = () => {
-  const node = document.getElementById("timetable");
+const exportToExcel = (timetableData, classId) => {
+  const rows = [];
 
-  if (!node) {
-    alert("Timetable not found.");
-    return;
-  }
+  timetableData.forEach((row) => {
+    const newRow = {
+      Day: row.day || "",
+      "8 – 10": formatPeriod(row?.periods?.Period_1),
+      "10 – 12": formatPeriod(row?.periods?.Period_2),
+      "12 – 2": formatPeriod(row?.periods?.Period_3),
+      "2 – 4": formatPeriod(row?.periods?.Period_4),
+    };
+    rows.push(newRow);
+  });
 
-  // Store original styles
-  const originalStyle = {
-    width: node.style.width,
-    height: node.style.height,
-    overflow: node.style.overflow,
-  };
+  const worksheet = XLSX.utils.json_to_sheet(rows);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Timetable");
 
-  // Force element to show full content
-  node.style.width = node.scrollWidth + "px";
-  node.style.height = node.scrollHeight + "px";
-  node.style.overflow = "visible";
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: "xlsx",
+    type: "array",
+  });
 
-  // Wait for DOM to reflow
-  setTimeout(() => {
-    // Higher pixel ratio to increase quality
-    toPng(node, {
-      cacheBust: true,
-      pixelRatio: 2, // this boosts quality
-    })
-      .then((dataUrl) => {
-        const img = new Image();
-        img.src = dataUrl;
+  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
+  saveAs(data, `${classId}_timetable.xlsx`);
+};
 
-        img.onload = () => {
-          const pdf = new jsPDF("landscape", "pt", "a4");
-
-          const pdfWidth = pdf.internal.pageSize.getWidth();
-          const pdfHeight = pdf.internal.pageSize.getHeight();
-
-          const imgWidth = img.width;
-          const imgHeight = img.height;
-
-          // Scale image to fit inside PDF
-          let scaledWidth = pdfWidth;
-          let scaledHeight = (imgHeight * pdfWidth) / imgWidth;
-
-          // If image is too tall, shrink to fit height
-          if (scaledHeight > pdfHeight) {
-            scaledHeight = pdfHeight;
-            scaledWidth = (imgWidth * pdfHeight) / imgHeight;
-          }
-
-          // Center the image on the page
-          const x = (pdfWidth - scaledWidth) / 2;
-          const y = (pdfHeight - scaledHeight) / 2;
-
-          pdf.addImage(dataUrl, "PNG", x, y, scaledWidth, scaledHeight);
-          pdf.save(`${classId}-timetable.pdf`);
-
-          // Restore original styles
-          Object.assign(node.style, originalStyle);
-        };
-      })
-      .catch((err) => {
-        console.error("Error generating PDF", err);
-        Object.assign(node.style, originalStyle);
-      });
-  }, 100);
+// Helper function to format each period
+const formatPeriod = (period) => {
+  if (!period) return "";
+  const { course = "", venue = "", lecturer = "" } = period;
+  return `${course}${venue ? " @ " + venue : ""}${lecturer ? " - " + lecturer : ""}`;
 };
   
 
@@ -142,7 +110,7 @@ useEffect(() => {
         <div className='flex ml-auto gap-5'>
 
           <div
-           onClick={handleDownload}
+           onClick={() => exportToExcel(data, classId)}
            className='text-4xl hidden p-2 rounded-full hover:text-blue-500 '
           >
             <MdOutlineFileDownload />

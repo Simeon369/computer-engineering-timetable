@@ -2,7 +2,7 @@ import React from 'react';
 
 const Timetable = ({ data }) => {
   return (
-    <div className="w-full flex md:justify-center overflow-scroll border-white/10">
+    <div className="w-full flex overflow-y-hidden overflow-x-hidden  md:justify-center overflow-scroll border-white/10">
         <table className="overflow-x-scroll text-sm text-gray-800">
           <thead className=''>
             <tr className="bg-white/10 text-white text-xs uppercase tracking-wide">
