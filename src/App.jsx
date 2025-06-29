@@ -4,6 +4,9 @@ import ReactGA from "react-ga4";
 import Home from './pages/home';
 import ClassPage from './pages/classPage';
 import Footer from './components/footer';
+import Login from "./pages/admin/login";
+import Admin from "./pages/admin/admin";
+import AdminClassView from "./pages/admin/adminClassView";
 
 function App() {
   useEffect(() => {
@@ -12,14 +15,20 @@ function App() {
 }, []);
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
-        <div className="flex-grow">
+      <div className="relative bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] text-white h-[100vh] flex flex-col">
+        <div className=" flex-1 overflow-y-auto">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/class/:classId" element={<ClassPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/view/:classId" element={<AdminClassView />} />
           </Routes>
         </div>
-        <Footer />
+        
+          <Footer />
+        
+        
       </div>
     </Router>
   );

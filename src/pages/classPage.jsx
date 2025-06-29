@@ -5,6 +5,7 @@ import { MdOutlineFileDownload } from "react-icons/md";
 import { FiCopy } from "react-icons/fi";
 import jsPDF from "jspdf";
 import { toPng } from "html-to-image";
+import { client } from "../lib/sanity";
 
 
 
@@ -92,15 +93,48 @@ const handleDownload = () => {
 };
   
 
-  useEffect(() => {
-    import(`../data/${classId}.json`)
-      .then(module => setData(module.default))
-      .catch(err => console.error("Failed to load data:", err));
-  }, [classId]);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const query = `*[_type == "timetable" && classId == $classId][0]{
+        monday,
+        tuesday,
+        wednesday,
+        thursday,
+        friday
+      }`;
+
+      const result = await client.fetch(query, { classId });
+
+      if (!result) {
+        setData([]);
+        return;
+      }
+
+      // Convert object to array for easier rendering
+      const structuredData = [
+        { day: "MON", ...result.monday },
+        { day: "TUE", ...result.tuesday },
+        { day: "WED", ...result.wednesday },
+        { day: "THUR", ...result.thursday },
+        { day: "FRI", ...result.friday },
+      ];
+
+      setData(structuredData);
+      console.log(structuredData);
+      
+    } catch (err) {
+      console.error("Failed to fetch timetable:", err);
+    }
+  };
+
+  fetchData();
+}, [classId]);
+
 
   return (
-    <div className="p-4" id='timetable'>
-      <nav className='px-4 flex items-center'>
+    <div className="p-4 " id='timetable'>
+      <nav className='px-4 flex items-center text-white/80 mb-10'>
         <h2 className="text-xl font-bold">
           {classId.toUpperCase()} Computer Engineering Timetable
         </h2>
@@ -109,7 +143,7 @@ const handleDownload = () => {
 
           <div
            onClick={handleDownload}
-           className='text-4xl p-2 rounded-full hover:text-blue-500 '
+           className='text-4xl hidden p-2 rounded-full hover:text-blue-500 '
           >
             <MdOutlineFileDownload />
           </div>
