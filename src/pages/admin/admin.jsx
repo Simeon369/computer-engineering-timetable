@@ -121,7 +121,7 @@ export default function AdminDashboard() {
     <div className="  font-sans">
       <div className="flex flex-col items-right  p-8">
         <div className="flex items-center gap-3 w-[100%] mb-6">
-          <h1 className="text-3xl font-bold text-center flex items-center gap-4 tracking-wide"><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
+          <h1 className="text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide "><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
           <button
             onClick={handleLogout}
             className="text-2xl ml-auto font-bold flex flex-col items-center hover:bg-cyan-400"
