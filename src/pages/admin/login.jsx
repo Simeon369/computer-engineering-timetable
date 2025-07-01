@@ -1,30 +1,43 @@
 // src/pages/Login.jsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../authContext"
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Login() {
+  const { loggedIn, setLoggedIn } = useAuth();
+  
+  
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  
+
 
   const handleLogin = () => {
     if (password === "mySecret123") {
-      localStorage.setItem("admin-auth", "true");
-      navigate("/admin");
+      setLoggedIn(true)
+      
+      
     } else {
       alert("Incorrect password");
     }
   };
 
+  useEffect(()=>{
+    if(loggedIn){
+      navigate('/admin')
+    }
+  }, [loggedIn])
+
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="bg-white p-6 shadow-md rounded max-w-sm w-full">
+      <div className="rounded-xl shadow backdrop-blur-sm p-6 bg-white/5 border border-white/10  text-white/80 max-w-sm w-full">
         <h1 className="text-xl font-bold mb-4 text-center">Admin Login</h1>
         <input
           type="password"
           placeholder="Enter password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 mb-4 rounded"
+          className="w-full border border-white/30 p-2 mb-4 rounded"
         />
         <button
           onClick={handleLogin}

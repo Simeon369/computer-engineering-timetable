@@ -6,6 +6,8 @@ import { FaTools } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
+import { useAuth } from "../../authContext"
+import { MdLogout } from "react-icons/md";
 
 export default function AdminDashboard() {
   const [classes, setClasses] = useState([]);
@@ -13,6 +15,19 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
+  const { loggedIn, setLoggedIn } = useAuth();
+
+  const handleLogout = () => {
+    setLoggedIn(false); // 🔁 Triggers useEffect below
+    localStorage.removeItem("loggedIn"); // optional
+  };
+
+  // 🔁 When loggedIn becomes false, redirect
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate("/login");
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     fetchClasses();
@@ -85,8 +100,16 @@ export default function AdminDashboard() {
 
   return (
     <div className="  font-sans">
-      <div className="flex flex-col items-center  p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center flex items-center gap-4 tracking-wide"><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
+      <div className="flex flex-col items-right  p-8">
+        <div className="flex justify-between items-center w-[100%] mb-6">
+          <h1 className="text-3xl font-bold text-center flex items-center gap-4 tracking-wide"><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
+          <button
+            onClick={handleLogout}
+            className="text-2xl font-bold hover:bg-cyan-400"
+          >
+            <MdLogout />
+          </button>
+        </div>
 
         <div className="flex justify-between items-center mb-8">
           <button
@@ -122,7 +145,7 @@ export default function AdminDashboard() {
           {classes.map(({ classId, _id }) => (
             <li
               key={_id}
-              className="flex justify-between items-center w-[80vw] bg-white/5 border border-white/10 p-4 rounded-xl shadow backdrop-blur-sm"
+              className="flex justify-between items-center w-[100%] bg-white/5 border border-white/10 p-4 rounded-xl shadow backdrop-blur-sm"
             >
               <button
                 className="text-cyan-300 hover:text-cyan-100 transition text-lg font-medium"
