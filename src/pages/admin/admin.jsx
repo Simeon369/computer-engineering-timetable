@@ -8,10 +8,12 @@ import { FaBookmark } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import { useAuth } from "../../authContext"
 import { MdLogout } from "react-icons/md";
+import { IoMdSettings } from "react-icons/io";
 
 export default function AdminDashboard() {
   const [classes, setClasses] = useState([]);
   const [newClassId, setNewClassId] = useState("");
+  const [newClassRep, setNewClassRep] = useState("")
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
@@ -39,6 +41,7 @@ export default function AdminDashboard() {
       const result = await client.fetch(query);
       const unique = [];
       const seen = new Set();
+    
 
       for (const item of result) {
         if (!seen.has(item.classId)) {
@@ -48,6 +51,7 @@ export default function AdminDashboard() {
       }
 
       setClasses(unique);
+      
     } catch (err) {
       console.error("Failed to fetch classes:", err);
     }
@@ -56,12 +60,14 @@ export default function AdminDashboard() {
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!newClassId.trim()) return alert("Please enter a class ID");
+    if(newClassRep === ('') || !(/^234[0-9]{10}$/.test(newClassRep)) ) return alert("Please enter a class rep's number")
 
     setLoading(true);
     const emptySlot = { course: "", venue: "", lecturer: "" };
 
     const newDoc = {
       _id: `timetable-${newClassId}`,
+      classRepNumber: newClassRep,
       _type: "timetable",
       classId: newClassId,
       monday: { period_1: emptySlot, period_2: emptySlot, period_3: emptySlot, period_4: emptySlot },
@@ -72,6 +78,19 @@ export default function AdminDashboard() {
     };
 
     try {
+      //check if classId already exists
+      const query = `*[_type == "timetable" && classId == $classId][0]`
+      const existing = await client.fetch(query, {classId: newClassId})
+      
+
+      if(existing){
+        alert('Class Id already exists');
+        return
+      }
+      
+
+
+
       await client.createIfNotExists(newDoc);
       alert("Timetable created successfully.");
       setNewClassId("");
@@ -101,13 +120,21 @@ export default function AdminDashboard() {
   return (
     <div className="  font-sans">
       <div className="flex flex-col items-right  p-8">
-        <div className="flex justify-between items-center w-[100%] mb-6">
+        <div className="flex items-center gap-3 w-[100%] mb-6">
           <h1 className="text-3xl font-bold text-center flex items-center gap-4 tracking-wide"><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
           <button
             onClick={handleLogout}
-            className="text-2xl font-bold hover:bg-cyan-400"
+            className="text-2xl ml-auto font-bold flex flex-col items-center hover:bg-cyan-400"
           >
             <MdLogout />
+            
+          </button>
+          <button
+            
+            className="text-2xl flex font-bold flex-col items-center hover:bg-cyan-400"
+          >
+            <IoMdSettings />
+            
           </button>
         </div>
 
@@ -128,6 +155,14 @@ export default function AdminDashboard() {
               value={newClassId}
               onChange={(e) => setNewClassId(e.target.value)}
               placeholder="e.g. nd1, hnd2"
+              className="bg-white/10 border border-white/20 text-white placeholder-gray-400 p-2 w-full rounded mb-4 outline-none"
+            />
+            <label className="block mb-2 font-semibold text-gray-200">Class Rep Phone Number</label>
+            <input
+              type="text"
+              value={newClassRep}
+              onChange={(e) => setNewClassRep(e.target.value)}
+              placeholder="2348012345678"
               className="bg-white/10 border border-white/20 text-white placeholder-gray-400 p-2 w-full rounded mb-4 outline-none"
             />
             <button
