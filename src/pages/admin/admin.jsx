@@ -9,6 +9,8 @@ import { CiCirclePlus } from "react-icons/ci";
 import { useAuth } from "../../authContext"
 import { MdLogout } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
+import {toast} from 'react-toastify'
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 export default function AdminDashboard() {
   const [classes, setClasses] = useState([]);
@@ -18,6 +20,22 @@ export default function AdminDashboard() {
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
   const { loggedIn, setLoggedIn } = useAuth();
+  const [showDelete, setShowDelete] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState(null);
+
+  const confirmDeleteFunc = (id) => {
+    
+    if (deleteTargetId === id && showDelete) return;
+
+    
+    setShowDelete(true)
+    setDeleteTargetId(id);
+    
+    setTimeout(() => {
+      setShowDelete(false)
+      setDeleteTargetId(null)
+    }, 10000);
+  }
 
   const handleLogout = () => {
     setLoggedIn(false); // 🔁 Triggers useEffect below
@@ -53,14 +71,14 @@ export default function AdminDashboard() {
       setClasses(unique);
       
     } catch (err) {
-      console.error("Failed to fetch classes:", err);
+      toast.error("Failed to fetch classes:", err);
     }
   };
 
   const handleCreate = async (e) => {
     e.preventDefault();
-    if (!newClassId.trim()) return alert("Please enter a class ID");
-    if(newClassRep === ('') || !(/^234[0-9]{10}$/.test(newClassRep)) ) return alert("Please enter a class rep's number")
+    if (!newClassId.trim()) return toast.warn("Please enter a class ID");
+    if(newClassRep === ('') || !(/^234[0-9]{10}$/.test(newClassRep)) ) return toast.warn("Please enter a class rep's number")
 
     setLoading(true);
     const emptySlot = { course: "", venue: "", lecturer: "" };
@@ -84,7 +102,7 @@ export default function AdminDashboard() {
       
 
       if(existing){
-        alert('Class Id already exists');
+        toast.error('Class Id already exists');
         return
       }
       
@@ -92,33 +110,37 @@ export default function AdminDashboard() {
 
 
       await client.createIfNotExists(newDoc);
-      alert("Timetable created successfully.");
+      toast.success("Timetable created successfully.");
       setNewClassId("");
       setShowForm(false);
       fetchClasses();
     } catch (err) {
       console.error("Error creating timetable:", err);
-      alert("Failed to create timetable.");
+      toast.error("Failed to create timetable.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this timetable?")) return;
+  const handleDelete = async () => {
+    if (!deleteTargetId) return;
+    
+    
 
     try {
-      await client.delete(id);
-      alert("Timetable deleted.");
+      await client.delete(deleteTargetId);
+      toast.success("Timetable deleted.");
+      setShowDelete(false)
+      setDeleteTargetId(null)
       fetchClasses();
     } catch (err) {
       console.error("Failed to delete:", err);
-      alert("Failed to delete timetable.");
+      toast.error("Failed to delete timetable.");
     }
   };
 
   return (
-    <div className="  font-sans">
+    <div className=" relative  font-sans">
       <div className="flex flex-col items-right  p-8">
         <div className="flex items-center gap-3 w-[100%] mb-6">
           <h1 className="text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide "><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
@@ -189,15 +211,27 @@ export default function AdminDashboard() {
                 {classId.toUpperCase()}
               </button>
               <button
-                onClick={() => handleDelete(_id)}
+                onClick={() => confirmDeleteFunc(classId)}
                 className="text-red-500 hover:text-red-400  px-4 py-1 rounded text-xl transition"
               >
                 <FaTrashAlt />
               </button>
-            </li>
+                {showDelete && deleteTargetId === classId && (
+                  <ConfirmDeleteModal
+                    id={deleteTargetId}
+                    isOpen={showDelete}
+                    onConfirm={()=>handleDelete()}
+                    onClose={() => {
+                      setShowDelete(false);
+                      setDeleteTargetId(null);
+                    }}
+                  />
+                )}            
+              </li>
           ))}
         </ul>
       </div>
+      
     </div>
   );
 }

@@ -1,8 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { client } from "../../lib/sanity";
 import TimetableEditable from "../../components/timetableEditable";
 import WhatsappPopup from "./WhatsappPopup";
+import { toast } from "react-toastify";
+import { FaArrowLeft } from "react-icons/fa";
 
 export default function AdminEditClass() {
   const { classId } = useParams();
@@ -12,6 +14,8 @@ export default function AdminEditClass() {
   const [showPopup, setShowPopup] = useState(false);
   const [waLink, setWaLink] = useState("");
   const [isValid, setIsValid] = useState(false)
+  const [hasChanged, setHasChanged] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(()=>{
     const isTrue = /^234[0-9]{10}$/.test(classRepNumber)
@@ -35,8 +39,9 @@ export default function AdminEditClass() {
 
     try{
       await client.patch(docId).set({ classRepNumber: classRepNumber}).commit();
-      alert("Class Rep's number changed successfully!");
+      toast.success("Class Rep's number changed successfully!");
     }catch (error){
+      toast.error("Failed to change Phone Number")
       console.error("Failed to change Phone Number", error)
     }
   }
@@ -101,6 +106,7 @@ export default function AdminEditClass() {
 
         setData(structuredData);
       } catch (err) {
+        toast.error("Failed to fetch timetable")
         console.error("Failed to fetch timetable:", err.message || err);
       }
     };
@@ -110,7 +116,7 @@ export default function AdminEditClass() {
 
   const handleSave = async () => {
     if (!docId) {
-      alert("❌ Error: No document ID found for this class.");
+      toast.error("❌ Error: No document ID found for this class.");
       return;
     }
 
@@ -149,20 +155,25 @@ export default function AdminEditClass() {
       };
 
       await client.patch(docId).set(updated).commit();
-      alert("✅ Timetable updated successfully.");
+      toast.success("✅ Timetable updated successfully.");
     } catch (err) {
       console.error("❌ Error saving:", err.message || err);
-      alert("❌ Error saving timetable.");
+      toast.error("❌ Error saving timetable.");
     }
 
     sendAlert()
+    setHasChanged(false)
   };
 
   return (
     <div className="max-w-[90vw] mx-auto  py-8">
       <div className="">
-        <div className="flex flex-col gap-4 md:flex-row justify-between  items-center mb-6">
-          <h1 className="text-2xl md:text-3xl font-bold text-cyan-400 text-center tracking-wide">
+        <div className="relative flex flex-col gap-4 md:flex-row justify-between  items-center mb-6">
+          <div onClick={()=>navigate("/admin")} className="absolute w-[50px] h-[50px] flex justify-center items-center ">
+            <FaArrowLeft />
+          </div>
+          
+          <h1 className="md:ml-20 text-2xl md:text-3xl font-bold text-cyan-400 text-center tracking-wide">
             EDIT TIMETABLE: <span className="">{classId.toUpperCase()}</span>
           </h1>
 
@@ -185,12 +196,13 @@ export default function AdminEditClass() {
         
         
 
-        <TimetableEditable data={data} setData={setData} />
+        <TimetableEditable data={data} setData={setData} setHasChanged={setHasChanged} />
 
         <div className="text-center mt-8">
           <button
             onClick={handleSave}
-            className="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold px-6 py-2 rounded shadow transition duration-200"
+            disabled={!hasChanged}
+            className={`bg-cyan-600 hover:bg-cyan-500 text-white font-semibold px-6 py-2 rounded shadow ${hasChanged ? '': 'bg-cyan-900'} transition duration-200`}
           >
             💾 Save All Changes
           </button>

@@ -4,8 +4,9 @@ import EditCellModal from "./editCellModal";
 const periods = ["Period_1", "Period_2", "Period_3", "Period_4"];
 const periodLabels = ["8–10", "10–12", "12–2", "2–4"];
 
-export default function TimetableEditable({ data, setData }) {
+export default function TimetableEditable({ data, setData, setHasChanged }) {
   const [selected, setSelected] = useState(null);
+  
 
   const handleCellClick = (dayIndex, periodKey) => {
     const cell = data[dayIndex].periods[periodKey] || {
@@ -26,6 +27,7 @@ export default function TimetableEditable({ data, setData }) {
       };
       return newData;
     });
+    setHasChanged(true)
     setSelected(null);
   };
 

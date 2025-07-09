@@ -7,6 +7,8 @@ import Footer from './components/footer';
 import Login from "./pages/admin/login";
 import Admin from "./pages/admin/admin";
 import AdminClassView from "./pages/admin/adminClassView";
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
   useEffect(() => {
@@ -27,6 +29,10 @@ function App() {
         </div>
         
           <Footer />
+
+          <>
+            <ToastContainer position="top-center" autoClose={5000} />
+          </>
         
         
       </div>

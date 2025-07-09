@@ -1,27 +1,27 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Timetable from '../components/timetable';
 import { MdOutlineFileDownload } from "react-icons/md";
 import { FiCopy } from "react-icons/fi";
-import jsPDF from "jspdf";
-import { toPng } from "html-to-image";
-import { client } from "../lib/sanity";
-import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { toast } from 'react-toastify';
+import { FaArrowLeft } from "react-icons/fa";
+import { client } from "../lib/sanity";
 
 
 
 export default function classPage() {
   const { classId } = useParams();
   const [data, setData] = useState([]);
+  const navigate = useNavigate()
 
   const handleCopy = () => {
     navigator.clipboard.writeText(window.location.href)
       .then(() => {
-        alert("Link copied to clipboard!");
+        toast.success("Link copied to clipboard!");
       })
       .catch((err) => {
-        alert("Failed to copy URL.");
+        toast.error("Failed to copy URL.");
         console.error(err);
       });
   }
@@ -103,6 +103,10 @@ useEffect(() => {
   return (
     <div className="p-4 " id='timetable'>
       <nav className='px-4 flex items-center text-white/80 mb-10'>
+      <div onClick={()=>navigate("/")} className='mr-6 w-[50px] h-[50px] flex justify-center items-center'>
+        <FaArrowLeft />
+      </div>
+        
         <h2 className="text-xl font-bold">
           {classId.toUpperCase()} Computer Engineering Timetable
         </h2>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../authContext"
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const { loggedIn, setLoggedIn } = useAuth();
@@ -15,10 +16,11 @@ export default function Login() {
   const handleLogin = () => {
     if (password === "mySecret123") {
       setLoggedIn(true)
+      toast.success("Logged In")
       
       
     } else {
-      alert("Incorrect password");
+      toast.warn("Incorrect password");
     }
   };
 

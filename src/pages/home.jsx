@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { client } from "../lib/sanity";
 import { useEffect, useState } from "react";
+import { toast } from 'react-toastify';
 
 export default function Home() {
   const [classes, setClasses] = useState([]);
@@ -14,7 +15,7 @@ export default function Home() {
         const uniqueClasses = [...new Set(result.map(item => item.classId))];
         setClasses(uniqueClasses);
       } catch (err) {
-        console.error("Failed to load class list:", err);
+        toast.error("Failed to load class list:", err);
       }
     };
 
