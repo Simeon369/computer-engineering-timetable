@@ -3,9 +3,17 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../authContext"
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import { client } from "../../lib/sanity";
 
 export default function Login() {
   const { loggedIn, setLoggedIn } = useAuth();
+
+  const validateAdminPassword = async (inputPassword) => {
+  const query = `*[_type == "adminSettings"][0]{ password }`;
+  const result = await client.fetch(query);
+  
+  return result?.password === inputPassword;
+};
   
   
   const [password, setPassword] = useState("");
@@ -13,8 +21,9 @@ export default function Login() {
   
 
 
-  const handleLogin = () => {
-    if (password === "mySecret123") {
+  const handleLogin = async () => {
+    const isValid = await validateAdminPassword(password);
+    if (isValid) {
       setLoggedIn(true)
       toast.success("Logged In")
       

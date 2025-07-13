@@ -140,7 +140,7 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className=" relative  font-sans">
+    <div className="  font-sans">
       <div className="flex flex-col items-right  p-8">
         <div className="flex items-center gap-3 w-[100%] mb-6">
           <h1 className="text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide "><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
@@ -155,7 +155,7 @@ export default function AdminDashboard() {
             
             className="text-2xl flex font-bold flex-col items-center hover:bg-cyan-400"
           >
-            <IoMdSettings />
+            <IoMdSettings /> 
             
           </button>
         </div>
@@ -216,7 +216,12 @@ export default function AdminDashboard() {
               >
                 <FaTrashAlt />
               </button>
-                {showDelete && deleteTargetId === classId && (
+                          
+              </li>
+          ))}
+        </ul>
+      </div>
+      {showDelete && (
                   <ConfirmDeleteModal
                     id={deleteTargetId}
                     isOpen={showDelete}
@@ -226,12 +231,7 @@ export default function AdminDashboard() {
                       setDeleteTargetId(null);
                     }}
                   />
-                )}            
-              </li>
-          ))}
-        </ul>
-      </div>
-      
+                )}  
     </div>
   );
 }
