@@ -122,15 +122,41 @@ export default function AdminDashboard() {
     }
   };
 
+
+const getDocumentIdFromClassId = async (classId) => {
+  const query = `*[_type == "timetable" && classId == $classId][0]{ _id }`;
+  console.log(query);
+  
+
+  try {
+    const result = await client.fetch(query, { classId });
+    if (result?._id) {
+      console.log(result);
+      
+      return result._id;
+    } else {
+      console.warn("No document found for classId:", classId);
+      return null;
+    }
+  } catch (err) {
+    console.error("Error fetching _id from classId:", err);
+    return null;
+  }
+};
+
+
   const handleDelete = async () => {
     console.log(deleteTargetId);
     
-    if (!deleteTargetId) return;
+
+    const documentId = await getDocumentIdFromClassId(deleteTargetId);
+      
+    console.log(documentId);
     
     
 
     try {
-      await client.delete(deleteTargetId);
+      await client.delete(documentId);
       toast.success("Timetable deleted.");
       setShowDelete(false)
       setDeleteTargetId(null)
@@ -213,7 +239,7 @@ export default function AdminDashboard() {
                 {classId.toUpperCase()}
               </button>
               <button
-                onClick={() => confirmDeleteFunc(classId._id)}
+                onClick={() => confirmDeleteFunc(classId)}
                 className="text-red-500 hover:text-red-400  px-4 py-1 rounded text-xl transition"
               >
                 <FaTrashAlt />
