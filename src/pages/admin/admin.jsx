@@ -84,7 +84,7 @@ export default function AdminDashboard() {
     const emptySlot = { course: "", venue: "", lecturer: "" };
 
     const newDoc = {
-      _id: `timetable-${newClassId}`,
+      _id: `${newClassId}`,
       classRepNumber: newClassRep,
       _type: "timetable",
       classId: newClassId,
@@ -123,6 +123,8 @@ export default function AdminDashboard() {
   };
 
   const handleDelete = async () => {
+    console.log(deleteTargetId);
+    
     if (!deleteTargetId) return;
     
     
@@ -146,14 +148,14 @@ export default function AdminDashboard() {
           <h1 className="text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide "><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
           <button
             onClick={handleLogout}
-            className="text-2xl ml-auto font-bold flex flex-col items-center hover:bg-cyan-400"
+            className="text-2xl w-[50px] h-[50px] ml-auto font-bold flex flex-col items-center justify-center rounded-full hover:bg-cyan-400"
           >
             <MdLogout />
             
           </button>
           <button
             
-            className="text-2xl flex font-bold flex-col items-center hover:bg-cyan-400"
+            className="text-2xl w-[50px] h-[50px] flex font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
           >
             <IoMdSettings /> 
             
@@ -199,9 +201,9 @@ export default function AdminDashboard() {
 
         <h2 className="text-2xl font-semibold mb-4 text-white flex items-center gap-4"><FaBookmark className="text-cyan-300" /> Existing Classes</h2>
         <ul className="space-y-4">
-          {classes.map(({ classId, _id }) => (
+          {classes.map(({ classId, index }) => (
             <li
-              key={_id}
+              key={index}
               className="flex justify-between items-center w-[100%] bg-white/5 border border-white/10 p-4 rounded-xl shadow backdrop-blur-sm"
             >
               <button
@@ -211,7 +213,7 @@ export default function AdminDashboard() {
                 {classId.toUpperCase()}
               </button>
               <button
-                onClick={() => confirmDeleteFunc(classId)}
+                onClick={() => confirmDeleteFunc(classId._id)}
                 className="text-red-500 hover:text-red-400  px-4 py-1 rounded text-xl transition"
               >
                 <FaTrashAlt />
