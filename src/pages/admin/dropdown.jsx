@@ -2,7 +2,7 @@ import React from "react";
 import { MdLogout } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
 
-const dropdown = ({handleLogout}) => {
+const dropdown = ({ handleLogout }) => {
   return (
     <div className="py-5 absolute right-0 top-12 flex md:hidden ">
       <button

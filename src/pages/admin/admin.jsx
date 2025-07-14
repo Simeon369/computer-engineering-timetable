@@ -38,8 +38,8 @@ export default function AdminDashboard() {
     }, 10000);
   };
 
-    const handleMenu = () => {
-    setMenu(prev=>!prev); // 🔁 Triggers useEffect below
+  const handleMenu = () => {
+    setMenu((prev) => !prev); // 🔁 Triggers useEffect below
     localStorage.removeItem("loggedIn"); // optional
   };
 
@@ -203,10 +203,13 @@ export default function AdminDashboard() {
           <button className="text-2xl hidden md:flex w-[50px] h-[50px] font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400">
             <IoMdSettings />
           </button>
-          <button onClick={handleMenu} className="text-2xl flex md:hidden w-[50px] h-[50px] ml-auto font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400">
+          <button
+            onClick={handleMenu}
+            className="text-2xl flex md:hidden w-[50px] h-[50px] ml-auto font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
+          >
             <CiMenuFries />
           </button>
-          {menu && <Dropdown handleLogout={handleLogout}  />}
+          {menu && <Dropdown handleLogout={handleLogout} />}
         </div>
 
         <div className="flex justify-between items-center mb-8">
