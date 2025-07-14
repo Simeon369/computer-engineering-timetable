@@ -5,6 +5,7 @@ import TimetableEditable from "../../components/timetableEditable";
 import WhatsappPopup from "./WhatsappPopup";
 import { toast } from "react-toastify";
 import { FaArrowLeft } from "react-icons/fa";
+import { CiMenuFries } from "react-icons/ci";
 
 export default function AdminEditClass() {
   const { classId } = useParams();
@@ -169,7 +170,7 @@ export default function AdminEditClass() {
     <div className="max-w-[90vw] mx-auto  py-8">
       <div className="">
         <div className="relative flex flex-col gap-4 md:flex-row justify-between  items-center mb-6">
-          <div onClick={()=>navigate("/admin")} className="absolute w-[50px] h-[50px] flex justify-center items-center ">
+          <div onClick={()=>navigate("/admin")} className="absolute left-0 w-[50px] h-[50px] flex justify-center items-center ">
             <FaArrowLeft />
           </div>
           

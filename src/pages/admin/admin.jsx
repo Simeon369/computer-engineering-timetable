@@ -6,17 +6,20 @@ import { FaTools } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaBookmark } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
-import { useAuth } from "../../authContext"
+import { useAuth } from "../../authContext";
 import { MdLogout } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { CiMenuFries } from "react-icons/ci";
+import Dropdown from "./dropdown";
 
 export default function AdminDashboard() {
   const [classes, setClasses] = useState([]);
   const [newClassId, setNewClassId] = useState("");
-  const [newClassRep, setNewClassRep] = useState("")
+  const [newClassRep, setNewClassRep] = useState("");
   const [loading, setLoading] = useState(false);
+  const [menu, setMenu] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
   const { loggedIn, setLoggedIn } = useAuth();
@@ -24,18 +27,21 @@ export default function AdminDashboard() {
   const [deleteTargetId, setDeleteTargetId] = useState(null);
 
   const confirmDeleteFunc = (id) => {
-    
     if (deleteTargetId === id && showDelete) return;
 
-    
-    setShowDelete(true)
+    setShowDelete(true);
     setDeleteTargetId(id);
-    
+
     setTimeout(() => {
-      setShowDelete(false)
-      setDeleteTargetId(null)
+      setShowDelete(false);
+      setDeleteTargetId(null);
     }, 10000);
-  }
+  };
+
+    const handleMenu = () => {
+    setMenu(prev=>!prev); // 🔁 Triggers useEffect below
+    localStorage.removeItem("loggedIn"); // optional
+  };
 
   const handleLogout = () => {
     setLoggedIn(false); // 🔁 Triggers useEffect below
@@ -59,7 +65,6 @@ export default function AdminDashboard() {
       const result = await client.fetch(query);
       const unique = [];
       const seen = new Set();
-    
 
       for (const item of result) {
         if (!seen.has(item.classId)) {
@@ -69,7 +74,6 @@ export default function AdminDashboard() {
       }
 
       setClasses(unique);
-      
     } catch (err) {
       toast.error("Failed to fetch classes:", err);
     }
@@ -78,7 +82,8 @@ export default function AdminDashboard() {
   const handleCreate = async (e) => {
     e.preventDefault();
     if (!newClassId.trim()) return toast.warn("Please enter a class ID");
-    if(newClassRep === ('') || !(/^234[0-9]{10}$/.test(newClassRep)) ) return toast.warn("Please enter a class rep's number")
+    if (newClassRep === "" || !/^234[0-9]{10}$/.test(newClassRep))
+      return toast.warn("Please enter a class rep's number");
 
     setLoading(true);
     const emptySlot = { course: "", venue: "", lecturer: "" };
@@ -88,26 +93,47 @@ export default function AdminDashboard() {
       classRepNumber: newClassRep,
       _type: "timetable",
       classId: newClassId,
-      monday: { period_1: emptySlot, period_2: emptySlot, period_3: emptySlot, period_4: emptySlot },
-      tuesday: { period_1: emptySlot, period_2: emptySlot, period_3: emptySlot, period_4: emptySlot },
-      wednesday: { period_1: emptySlot, period_2: emptySlot, period_3: emptySlot, period_4: emptySlot },
-      thursday: { period_1: emptySlot, period_2: emptySlot, period_3: emptySlot, period_4: emptySlot },
-      friday: { period_1: emptySlot, period_2: emptySlot, period_3: emptySlot, period_4: emptySlot },
+      monday: {
+        period_1: emptySlot,
+        period_2: emptySlot,
+        period_3: emptySlot,
+        period_4: emptySlot,
+      },
+      tuesday: {
+        period_1: emptySlot,
+        period_2: emptySlot,
+        period_3: emptySlot,
+        period_4: emptySlot,
+      },
+      wednesday: {
+        period_1: emptySlot,
+        period_2: emptySlot,
+        period_3: emptySlot,
+        period_4: emptySlot,
+      },
+      thursday: {
+        period_1: emptySlot,
+        period_2: emptySlot,
+        period_3: emptySlot,
+        period_4: emptySlot,
+      },
+      friday: {
+        period_1: emptySlot,
+        period_2: emptySlot,
+        period_3: emptySlot,
+        period_4: emptySlot,
+      },
     };
 
     try {
       //check if classId already exists
-      const query = `*[_type == "timetable" && classId == $classId][0]`
-      const existing = await client.fetch(query, {classId: newClassId})
-      
+      const query = `*[_type == "timetable" && classId == $classId][0]`;
+      const existing = await client.fetch(query, { classId: newClassId });
 
-      if(existing){
-        toast.error('Class Id already exists');
-        return
+      if (existing) {
+        toast.error("Class Id already exists");
+        return;
       }
-      
-
-
 
       await client.createIfNotExists(newDoc);
       toast.success("Timetable created successfully.");
@@ -122,44 +148,38 @@ export default function AdminDashboard() {
     }
   };
 
+  const getDocumentIdFromClassId = async (classId) => {
+    const query = `*[_type == "timetable" && classId == $classId][0]{ _id }`;
+    console.log(query);
 
-const getDocumentIdFromClassId = async (classId) => {
-  const query = `*[_type == "timetable" && classId == $classId][0]{ _id }`;
-  console.log(query);
-  
+    try {
+      const result = await client.fetch(query, { classId });
+      if (result?._id) {
+        console.log(result);
 
-  try {
-    const result = await client.fetch(query, { classId });
-    if (result?._id) {
-      console.log(result);
-      
-      return result._id;
-    } else {
-      console.warn("No document found for classId:", classId);
+        return result._id;
+      } else {
+        console.warn("No document found for classId:", classId);
+        return null;
+      }
+    } catch (err) {
+      console.error("Error fetching _id from classId:", err);
       return null;
     }
-  } catch (err) {
-    console.error("Error fetching _id from classId:", err);
-    return null;
-  }
-};
-
+  };
 
   const handleDelete = async () => {
     console.log(deleteTargetId);
-    
 
     const documentId = await getDocumentIdFromClassId(deleteTargetId);
-      
+
     console.log(documentId);
-    
-    
 
     try {
       await client.delete(documentId);
       toast.success("Timetable deleted.");
-      setShowDelete(false)
-      setDeleteTargetId(null)
+      setShowDelete(false);
+      setDeleteTargetId(null);
       fetchClasses();
     } catch (err) {
       console.error("Failed to delete:", err);
@@ -169,23 +189,24 @@ const getDocumentIdFromClassId = async (classId) => {
 
   return (
     <div className="  font-sans">
-      <div className="flex flex-col items-right  p-8">
-        <div className="flex items-center gap-3 w-[100%] mb-6">
-          <h1 className="text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide "><FaTools className="text-cyan-300" /> Admin Dashboard</h1>
+      <div className=" flex flex-col items-right  p-8">
+        <div className="relative flex items-center gap-3 w-[100%] mb-6">
+          <h1 className=" text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide ">
+            <FaTools className="text-cyan-300" /> Admin Dashboard
+          </h1>
           <button
             onClick={handleLogout}
-            className="text-2xl w-[50px] h-[50px] ml-auto font-bold flex flex-col items-center justify-center rounded-full hover:bg-cyan-400"
+            className="text-2xl hidden md:flex w-[50px] h-[50px] ml-auto font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
           >
             <MdLogout />
-            
           </button>
-          <button
-            
-            className="text-2xl w-[50px] h-[50px] flex font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
-          >
-            <IoMdSettings /> 
-            
+          <button className="text-2xl hidden md:flex w-[50px] h-[50px] font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400">
+            <IoMdSettings />
           </button>
+          <button onClick={handleMenu} className="text-2xl flex md:hidden w-[50px] h-[50px] ml-auto font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400">
+            <CiMenuFries />
+          </button>
+          {menu && <Dropdown handleLogout={handleLogout}  />}
         </div>
 
         <div className="flex justify-between items-center mb-8">
@@ -198,8 +219,13 @@ const getDocumentIdFromClassId = async (classId) => {
         </div>
 
         {showForm && (
-          <form onSubmit={handleCreate} className="bg-white/10 border border-white/20 p-6 rounded-xl mb-6">
-            <label className="block mb-2 font-semibold text-gray-200">Class ID</label>
+          <form
+            onSubmit={handleCreate}
+            className="bg-white/10 border border-white/20 p-6 rounded-xl mb-6"
+          >
+            <label className="block mb-2 font-semibold text-gray-200">
+              Class ID
+            </label>
             <input
               type="text"
               value={newClassId}
@@ -207,7 +233,9 @@ const getDocumentIdFromClassId = async (classId) => {
               placeholder="e.g. nd1, hnd2"
               className="bg-white/10 border border-white/20 text-white placeholder-gray-400 p-2 w-full rounded mb-4 outline-none"
             />
-            <label className="block mb-2 font-semibold text-gray-200">Class Rep Phone Number</label>
+            <label className="block mb-2 font-semibold text-gray-200">
+              Class Rep Phone Number
+            </label>
             <input
               type="text"
               value={newClassRep}
@@ -225,7 +253,9 @@ const getDocumentIdFromClassId = async (classId) => {
           </form>
         )}
 
-        <h2 className="text-2xl font-semibold mb-4 text-white flex items-center gap-4"><FaBookmark className="text-cyan-300" /> Existing Classes</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-white flex items-center gap-4">
+          <FaBookmark className="text-cyan-300" /> Existing Classes
+        </h2>
         <ul className="space-y-4">
           {classes.map(({ classId, index }) => (
             <li
@@ -244,22 +274,21 @@ const getDocumentIdFromClassId = async (classId) => {
               >
                 <FaTrashAlt />
               </button>
-                          
-              </li>
+            </li>
           ))}
         </ul>
       </div>
       {showDelete && (
-                  <ConfirmDeleteModal
-                    id={deleteTargetId}
-                    isOpen={showDelete}
-                    onConfirm={()=>handleDelete()}
-                    onClose={() => {
-                      setShowDelete(false);
-                      setDeleteTargetId(null);
-                    }}
-                  />
-                )}  
+        <ConfirmDeleteModal
+          id={deleteTargetId}
+          isOpen={showDelete}
+          onConfirm={() => handleDelete()}
+          onClose={() => {
+            setShowDelete(false);
+            setDeleteTargetId(null);
+          }}
+        />
+      )}
     </div>
   );
 }
