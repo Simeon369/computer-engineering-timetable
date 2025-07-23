@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import tailwindcss from "@tailwindcss/vite";
-import icons from './src/assets/icons.json'
+import icons from "./src/assets/icons.json";
 
 export default defineConfig({
   plugins: [
@@ -24,7 +24,16 @@ export default defineConfig({
         background_color: "#ffffff",
         display: "standalone",
         start_url: "/",
-        icons: icons.icons,
+        icons: [
+          {
+            src: "android/android-launchericon-512-512.png",
+            sizes: "512x512",
+          },
+          {
+            src: "android/android-launchericon-144-144.png",
+            sizes: "144x144",
+          },
+        ],
       },
     }),
   ],
