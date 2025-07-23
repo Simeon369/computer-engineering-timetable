@@ -2,7 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 import tailwindcss from "@tailwindcss/vite";
-import icons from 'public/icons.json'
+import icons from './src/data/icons.json'
 
 export default defineConfig({
   plugins: [
