@@ -3,9 +3,9 @@ import React from 'react';
 const Timetable = ({ data }) => {
   return (
     <div className="w-full flex overflow-x-scroll no-scrollbar  md:justify-center overflow-scroll border-white/10">
-        <table className="overflow-x-scroll text-sm text-gray-800">
+        <table className="overflow-x-scroll text-sm text-gray-800 text-cente" id='table'>
           <thead className=''>
-            <tr className="bg-white/10 text-white text-xs uppercase tracking-wide">
+            <tr className="bg-white/10 text-white text-xs uppercase tracking-wide r">
               <th className="border border-white/10 py-3 px-2 text-center  min-w-[100px]">Day</th>
               <th className="border border-white/10 py-3 px-2  min-w-[100px]">8 – 10</th>
               <th className="border border-white/10 py-3 px-2  min-w-[100px]">10 – 12</th>
@@ -29,9 +29,9 @@ const Timetable = ({ data }) => {
                       key={p}
                       className="border border-white/10 p-3 text-center whitespace-pre-wrap text-xs leading-snug"
                     >
-                      <div className="text-gray-300">{period.course}</div>
-                      <div className="font-bold text-cyan-300">{period.venue}</div>
-                      <div className="text-gray-300">{period.lecturer}</div>
+                      <div className="text-gray-300">{period.course} <br /></div>
+                      <div className="font-bold text-cyan-300">{period.venue} <br /></div>
+                      <div className="text-gray-300">{period.lecturer} <br /></div>
                     </td>
                   );
                 })}

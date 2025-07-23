@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import Timetable from '../components/timetable';
 import { MdOutlineFileDownload } from "react-icons/md";
 import { FiCopy } from "react-icons/fi";
-import { saveAs } from "file-saver";
 import { toast } from 'react-toastify';
 import { FaArrowLeft } from "react-icons/fa";
 import { client } from "../lib/sanity";
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable'; // This registers the plugin onto jsPDF
 
 
 
@@ -26,31 +27,10 @@ export default function classPage() {
       });
   }
 
-const exportToExcel = (timetableData, classId) => {
-  const rows = [];
-
-  timetableData.forEach((row) => {
-    const newRow = {
-      Day: row.day || "",
-      "8 – 10": formatPeriod(row?.periods?.Period_1),
-      "10 – 12": formatPeriod(row?.periods?.Period_2),
-      "12 – 2": formatPeriod(row?.periods?.Period_3),
-      "2 – 4": formatPeriod(row?.periods?.Period_4),
-    };
-    rows.push(newRow);
-  });
-
-  const worksheet = XLSX.utils.json_to_sheet(rows);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Timetable");
-
-  const excelBuffer = XLSX.write(workbook, {
-    bookType: "xlsx",
-    type: "array",
-  });
-
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, `${classId}_timetable.xlsx`);
+const downloadTable = () => {
+  const pdf = new jsPDF();
+  autoTable(pdf, { html: '#table', theme: 'grid' }); // Pulls table directly from the DOM
+  pdf.save(`${classId}_timetable.pdf`);
 };
 
 // Helper function to format each period
@@ -114,8 +94,8 @@ useEffect(() => {
         <div className='flex ml-auto gap-5'>
 
           <div
-           onClick={() => exportToExcel(data, classId)}
-           className='text-4xl hidden p-2 rounded-full hover:text-blue-500 '
+           onClick={() => downloadTable()}
+           className='text-4xl  p-2 rounded-full hover:text-blue-500 '
           >
             <MdOutlineFileDownload />
           </div>
