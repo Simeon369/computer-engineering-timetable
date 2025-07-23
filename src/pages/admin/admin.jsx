@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import ConfirmDeleteModal from "./ConfirmDeleteModal";
 import { CiMenuFries } from "react-icons/ci";
 import Dropdown from "./dropdown";
+import { FaHome } from "react-icons/fa";
 
 export default function AdminDashboard() {
   const [classes, setClasses] = useState([]);
@@ -194,18 +195,22 @@ export default function AdminDashboard() {
           <h1 className=" text-xl md:text-3xl font-bold text-center flex justify-start items-center gap-4 tracking-wide ">
             <FaTools className="text-cyan-300" /> Admin Dashboard
           </h1>
+          <button onClick={() => navigate("/")} className="text-2xl ml-auto flex w-[50px] h-[50px] font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400">
+            <FaHome />
+          </button>
           <button
             onClick={handleLogout}
-            className="text-2xl hidden md:flex w-[50px] h-[50px] ml-auto font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
+            className="text-2xl hidden md:flex w-[50px] h-[50px] font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
           >
             <MdLogout />
           </button>
           <button className="text-2xl hidden md:flex w-[50px] h-[50px] font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400">
             <IoMdSettings />
           </button>
+
           <button
             onClick={handleMenu}
-            className="text-2xl flex md:hidden w-[50px] h-[50px] ml-auto font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
+            className="text-2xl flex md:hidden w-[50px] h-[50px] font-bold flex-col items-center justify-center rounded-full hover:bg-cyan-400"
           >
             <CiMenuFries />
           </button>

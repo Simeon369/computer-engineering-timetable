@@ -4,6 +4,7 @@ import { useAuth } from "../../authContext"
 import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { client } from "../../lib/sanity";
+import { FaArrowLeft } from "react-icons/fa6";
 
 export default function Login() {
   const { loggedIn, setLoggedIn } = useAuth();
@@ -41,6 +42,9 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center h-screen">
+      <div onClick={()=>navigate('/')} className="absolute left-4 top-4 w-[50px] h-[50px] flex justify-center items-center text-white/80 hover:text-white cursor-pointer">
+        <FaArrowLeft />
+      </div>
       <div className="rounded-xl shadow backdrop-blur-sm p-6 bg-white/5 border border-white/10  text-white/80 max-w-sm w-full">
         <h1 className="text-xl font-bold mb-4 text-center">Admin Login</h1>
         <input
