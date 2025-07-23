@@ -26,11 +26,11 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
-            src: "/android/android-launchericon-512-512.png",
+            src: "android/android-launchericon-512-512.png",
             sizes: "512x512",
           },
           {
-            src: "/android/android-launchericon-144-144.png",
+            src: "android/android-launchericon-144-144.png",
             sizes: "144x144",
           },
         ],
