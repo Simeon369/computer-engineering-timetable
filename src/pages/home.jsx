@@ -1,9 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { client } from "../lib/sanity";
 import { useEffect, useState } from "react";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
+import { MdAdminPanelSettings } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
@@ -12,7 +15,7 @@ export default function Home() {
         const query = `*[_type == "timetable"]{ classId }`;
         const result = await client.fetch(query);
 
-        const uniqueClasses = [...new Set(result.map(item => item.classId))];
+        const uniqueClasses = [...new Set(result.map((item) => item.classId))];
         setClasses(uniqueClasses);
       } catch (err) {
         toast.error("Failed to load class list:", err);
@@ -24,9 +27,14 @@ export default function Home() {
 
   return (
     <div className=" flex flex-col items-center justify-center px-6 py-10">
-      <h1 className="text-4xl font-extrabold text-white/80 mb-8 tracking-tight">
-        Select a Class
-      </h1>
+      <div className="relative flex w-full justify-center items-center mb-8">
+        <h1 className="text-4xl font-extrabold text-white/80 tracking-tight">
+          Select a Class
+        </h1>
+        <div onClick={()=>navigate('/admin')} className="absolute right-0 text-3xl p-2 hover:text-cyan-400">
+          <MdAdminPanelSettings />
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-md">
         {classes.length > 0 ? (
