@@ -95,13 +95,13 @@ useEffect(() => {
 
           <div
            onClick={() => downloadTable()}
-           className='text-4xl  p-2 rounded-full hover:text-blue-500 '
+           className='text-2xl md:text-4xl  p-1 md:p-2 rounded-full hover:text-blue-500 '
           >
             <MdOutlineFileDownload />
           </div>
           <div
           onClick={handleCopy}
-          className='text-4xl p-2 rounded-full hover:text-blue-500 '>
+          className='text-2xl md:text-4xl  p-1 md:p-2 rounded-full hover:text-blue-500 '>
             <FiCopy />
           </div>
 
